@@ -10,7 +10,7 @@ from pygame.locals import (
 
 from screen import Screen
 from player import Player
-from missile import Missile
+from bird import Bird
 from cloud import Cloud
 
 
@@ -30,26 +30,26 @@ class Game:
         self._clock = pygame.time.Clock()
         # Create the screen object
         self._screen = pygame.display.set_mode((Screen.width, Screen.height))
-        # Create custom events for adding a new missile and cloud
-        new_missile_period = 250//2
-        new_cloud_period = 1000//2
-        # make a new missile/cloud every these milliseconds, so the smaller
-        # the more new missiles/clouds
-        self._add_missile = pygame.USEREVENT + 1
-        pygame.time.set_timer(self._add_missile, new_missile_period)
+        # Create custom events for adding a new bird and cloud
+        new_bird_period = 125
+        new_cloud_period = 500
+        # make a new bird/cloud every these milliseconds, so the smaller
+        # the more new birds/clouds
+        self._add_bird = pygame.USEREVENT + 1
+        pygame.time.set_timer(self._add_bird, new_bird_period)
         self._add_cloud = pygame.USEREVENT + 2
         pygame.time.set_timer(self._add_cloud, new_cloud_period)
-        self._user_quits = False # to quit press Escape or close the window
+        self._user_quits = False  # to quit press Escape or close the window
 
     def _make_objects(self):
         # Create our 'player'
         self._player = Player()
 
-        # Create groups to hold missile sprites, cloud sprites, and all sprites
-        # - missiles is used for collision detection and position updates
+        # Create groups to hold bird sprites, cloud sprites, and all sprites
+        # - birds is used for collision detection and position updates
         # - clouds is used for position updates
         # - all_sprites is used for rendering
-        self._missiles = pygame.sprite.Group()
+        self._birds = pygame.sprite.Group()
         self._clouds = pygame.sprite.Group()
         self._all_sprites = pygame.sprite.Group()
         self._all_sprites.add(self._player)
@@ -65,17 +65,6 @@ class Game:
             "sounds_music/Explosion_10.ogg")
         self._collision_sound.set_volume(0.5)
 
-    # if centers of the rectangles of the two sprites are close then there is a
-    # collision. This looks better than check if the bounding boxes of the two
-    # sprites intersect or not
-    # TODO: make distx, disty relative to the size of the rectangles
-    @staticmethod
-    def _my_collide(sprite1, sprite2, distx=20, disty=10):
-        pos1 = sprite1.rect.center
-        pos2 = sprite2.rect.center
-        return abs(pos1[0] - pos2[0]) <= distx \
-            and abs(pos1[1] - pos2[1]) <= disty
-
     def _process_event(self):
         # Look at every event in the queue
         for event in pygame.event.get():
@@ -87,12 +76,12 @@ class Game:
             # Did the user click the window close button? If so, stop the loop
             elif event.type == QUIT:
                 self._user_quits = True
-            # Should we add a new missile?
-            elif event.type == self._add_missile:
-                # Create the new missile, and add it to our sprite groups
-                new_missile = Missile()
-                self._missiles.add(new_missile)
-                self._all_sprites.add(new_missile)
+            # Should we add a new bird?
+            elif event.type == self._add_bird:
+                # Create the new bird, and add it to our sprite groups
+                new_bird = Bird()
+                self._birds.add(new_bird)
+                self._all_sprites.add(new_bird)
             # Should we add a new cloud?
             elif event.type == self._add_cloud:
                 # Create the new cloud, and add it to our sprite groups
@@ -105,8 +94,8 @@ class Game:
         pressed_keys = pygame.key.get_pressed()
         self._player.update(pressed_keys)
         # move the player if key was an arrow
-        # Update the position of our missiles and clouds
-        self._missiles.update()
+        # Update the position of our birds and clouds
+        self._birds.update()
         self._clouds.update()
 
     def _draw(self):
@@ -119,13 +108,12 @@ class Game:
         pygame.display.flip()
 
     def _collision(self):
-        return pygame.sprite.spritecollideany(self._player, self._missiles,
-                                              self._my_collide)
+        return pygame.sprite.spritecollideany(self._player, self._birds)
 
     def _game_over(self):
         return self._collision() or self._user_quits
 
-    def _keep_framerate(self):
+    def _keep_frame_rate(self):
         # Ensure we maintain a 30 frames per second rate
         self._clock.tick(30)
 
@@ -134,9 +122,9 @@ class Game:
             self._process_event()
             self._update()
             self._draw()
-            self._keep_framerate()
+            self._keep_frame_rate()
 
-        # Check if any missile have collided with the player
+        # Check if any bird have collided with the player
         if self._collision():
             # If so, remove the player
             self._player.kill()
@@ -144,6 +132,6 @@ class Game:
             self._player.stop_move_sounds()
             pygame.mixer.music.stop()
             self._collision_sound.play()
-            pygame.time.wait(2000) # to play collision sound
+            pygame.time.wait(2000)  # seconds, to play collision sound
 
         pygame.mixer.quit()

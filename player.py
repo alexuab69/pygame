@@ -16,11 +16,18 @@ from screen import Screen
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
-        self.surf = pygame.image.load("icons/jet.png").convert()
+        self.surf = pygame.image.load("icons/helicopter.png").convert()
         self.surf.set_colorkey((255, 255, 255), RLEACCEL)
+        # initial position
         self.rect = self.surf.get_rect(
             center=(Screen.width//4, Screen.height//2)
         )
+        """        x
+             +------>
+             |
+          y  |
+             v
+        """
         self.move_up_sound = pygame.mixer.Sound("sounds_music/Rising_putter.ogg")
         self.move_up_sound.set_volume(0.5)
         self.move_down_sound = pygame.mixer.Sound("sounds_music/Falling_putter.ogg")
