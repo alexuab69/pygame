@@ -35,10 +35,10 @@ class Game:
         new_cloud_period = 500
         # make a new bird/cloud every these milliseconds, so the smaller
         # the more new birds/clouds
-        self._add_bird = pygame.USEREVENT + 1
-        pygame.time.set_timer(self._add_bird, new_bird_period)
-        self._add_cloud = pygame.USEREVENT + 2
-        pygame.time.set_timer(self._add_cloud, new_cloud_period)
+        self._add_bird_event_type = pygame.USEREVENT + 1
+        pygame.time.set_timer(self._add_bird_event_type, new_bird_period)
+        self._add_cloud_event_type = pygame.USEREVENT + 2
+        pygame.time.set_timer(self._add_cloud_event_type, new_cloud_period)
         self._user_quits = False  # to quit press Escape or close the window
 
     def _make_objects(self):
@@ -68,6 +68,7 @@ class Game:
     def _process_event(self):
         # Look at every event in the queue
         for event in pygame.event.get():
+            print('event type = {}'.format(event.type))
             # Did the user hit a key?
             if event.type == KEYDOWN:
                 # Was it the Escape key? If so, stop the loop
@@ -77,13 +78,13 @@ class Game:
             elif event.type == QUIT:
                 self._user_quits = True
             # Should we add a new bird?
-            elif event.type == self._add_bird:
+            elif event.type == self._add_bird_event_type:
                 # Create the new bird, and add it to our sprite groups
                 new_bird = Bird()
                 self._birds.add(new_bird)
                 self._all_sprites.add(new_bird)
             # Should we add a new cloud?
-            elif event.type == self._add_cloud:
+            elif event.type == self._add_cloud_event_type:
                 # Create the new cloud, and add it to our sprite groups
                 new_cloud = Cloud()
                 self._clouds.add(new_cloud)
