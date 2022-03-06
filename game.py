@@ -31,7 +31,7 @@ class Game:
         # Create the screen object
         self._screen = pygame.display.set_mode((Screen.width, Screen.height))
         # Create custom events for adding a new bird and cloud
-        new_bird_period = 125
+        new_bird_period = 300
         new_cloud_period = 500
         # make a new bird/cloud every these milliseconds, so the smaller
         # the more new birds/clouds

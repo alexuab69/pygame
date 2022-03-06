@@ -13,6 +13,10 @@ package pygame {
 }
 
 class Bird extends Sprite {
++ {static} Min_Speed : int
++ {static} Max_Speed : int
+- speed : int
+- time : int
 +update()
 }
 
@@ -34,16 +38,17 @@ class Game {
 - add_cloud_event_type : int
 - user_quits : boolean
 + play()
-- initialize_game()
-- make_objects()
-- load_music_and_sound()
-- play_music()
-- process_event()
-- draw()
-- collision() : boolean
-- game_over() : boolean
-- keep_frame_rate()
-- update()
+''' comment out private methods
+'- initialize_game()
+'- make_objects()
+'- load_music_and_sound()
+'- play_music()
+'- process_event()
+'- draw()
+'- collision() : boolean
+'- game_over() : boolean
+'- keep_frame_rate()
+'- update()
 }
 
 Game --> Sprite : all_sprites "1..*"
@@ -51,7 +56,7 @@ Game --> Bird : birds "*"
 Game --> Cloud : clouds "*"
 Game --> Player : player "1"
 
-' positioning
+''' positioning
 Player -[hidden]down-> Game
 Sprite -[hidden]down-> Bird
 Sprite -[hidden]down-> Cloud
