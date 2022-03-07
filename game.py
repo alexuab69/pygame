@@ -22,13 +22,9 @@ class Game:
         self._play_music()
 
     def _initialize_game(self):
-        # Setup for sounds_music, defaults are good
-        pygame.mixer.init()
-        # Initialize pygame
-        pygame.init()
         # Setup the clock for a decent frame rate
         self._clock = pygame.time.Clock()
-        # Create the screen object
+        # Create and get the screen object
         self._screen = pygame.display.set_mode((Screen.width, Screen.height))
         # Create custom events for adding a new bird and cloud
         new_bird_period = 300
