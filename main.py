@@ -6,6 +6,8 @@ from bird import Bird
 from cloud import Cloud
 from mountain import Mountain
 from umbrella import Umbrella
+from jet import Jet
+from missile import Missile
 
 # Initialize PyGame
 # setup for sounds_music, defaults are good
@@ -21,7 +23,7 @@ if level=='easy':
     factory_flying = FactorySprites([Bird()], [300], pygame.USEREVENT + 1)
     factory_landscape = FactorySprites([Cloud()], [400], pygame.USEREVENT + 10)
 elif level=='difficult':
-    factory_flying = FactorySprites([Bird(), Umbrella()], [400, 500],
+    factory_flying = FactorySprites([Bird(), Umbrella(), Jet(), Missile()], [400, 500, 2000,2100],
     pygame.USEREVENT + 1)
     factory_landscape = FactorySprites([Cloud(), Mountain()], [500, 2000,],
     pygame.USEREVENT + 10)
