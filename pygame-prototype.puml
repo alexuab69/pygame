@@ -12,19 +12,52 @@ package pygame {
   class Sound
 }
 
-class Bird extends Sprite {
+class Bird extends GameSprite {
 + {static} Min_Speed : int
 + {static} Max_Speed : int
 - speed : int
 - time : int
 +update()
++clone() : Bird
 }
 
-class Cloud extends Sprite {
+class GameSprite extends pygame.Sprite 
+class Cloud extends GameSprite {
 +update()
++clone() : Cloud
 }
 
-class Player extends Sprite {
+class Missile extends GameSprite {
++ {static} Min_Speed : int
++ {static} Max_Speed : int
+- speed : int
+- time : int
++update()
++clone() : Missile
+}
+
+class Umbrella extends GameSprite {
+- speed : int
+- time : int
++update()
++clone() : Umbrella
+}
+
+class Jet extends GameSprite {
++ {static} Min_Speed : int
++ {static} Max_Speed : int
+- speed : int
+- time : int
++update()
++clone() : Jet
+}
+
+class Mountain extends GameSprite {
++update()
++clone() : Mountain
+}
+
+class Player extends pygame.Sprite {
 - move_up_sound : Sound
 - move_down_sound : Sound
 + update(pressed_keys : boolean[])
@@ -32,10 +65,6 @@ class Player extends Sprite {
 }
 
 class Game {
-- clock : Clock
-- screen : Surface
-- add_bird_event_type : int
-- add_cloud_event_type : int
 - user_quits : boolean
 + play()
 ''' comment out private methods
@@ -51,9 +80,19 @@ class Game {
 '- update()
 }
 
+class FactorySprites{
+- periods
+- event_types
++ make() : GameSprite
+}
+
+FactorySprites --> GameSprite : prototypes "1..*"
+Game --> Clock : clock "1"
 Game --> Sprite : all_sprites "1..*"
-Game --> Bird : birds "*"
-Game --> Cloud : clouds "*"
+Game --> GameSprite : landscape_sprites "1"
+Game --> GameSprite : flying_sprites "1"
+Game --> FactorySprites : factory_flying "1"
+Game --> FactorySprites : factory_landscape "1"
 Game --> Player : player "1"
 
 ''' positioning

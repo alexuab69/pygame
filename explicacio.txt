@@ -1,0 +1,6 @@
+Hem utilitzat el pattern de disseny Prototype per a facilitar la creació de noves instàncies dels diferents tipus de sprites.
+ Així, quan es vol crear un nou GameSprite, es clona un objecte ja existent dirèctament. D'això se n'encarrega la classe FactorySprites, que conté els prototips dels diferents tipus de sprites, creats en el main i guardats a un array.
+ També hem recopilat tots els sprites de joc en una classe anomenada GameSprite, que conté el mètode de clonar que és eretat per tots els fills.
+
+ Aquesta manera de treballar amb les classes ens permet agregar noves classes similars molt fàcilment, ja que la lògica de com crear nous objectes de cada classe se'n encarrega el FactorySprites, sense agregar un mètode per a crear cada nou tipus de sprite.
+ Així, agregar les classes de Jet i Missile ha estat tan senzill com inicialitzar-los amb els atributs corresponents i afegir-los a la llista de prototips de FactorySprites.
